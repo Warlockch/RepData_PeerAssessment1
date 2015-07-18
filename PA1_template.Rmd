@@ -7,7 +7,7 @@ output:
 
 
 ## Loading and preprocessing the data
-## Load the essiential packages
+load the essiential packages
 ```{r}
 library(ggplot2)
 library(data.table)

@@ -35,7 +35,7 @@ ggplot(steps_day,aes(x=totalsteps)) + geom_histogram() +
 xlab("Total number of steps") +
 ggtitle("total number of steps taken each day")+ theme_bw()
 ```
-![Total plot](\instructions_fig\Total numbers of steps per day.png) 
+![Total plot](\instructions_fig\1.png) 
 Calculate the mean and median total number of steps taken per day
 ```{r}
 median(steps_day$totalsteps,na.rm = TRUE)
@@ -50,7 +50,7 @@ ggplot(avr_int, aes(x=interval, y=meanSteps)) +
 geom_line() + ggtitle("Average steps for each 5-min interval")+
 ylab("Mean steps") + theme_bw()
 ```
-![Sample panel plot](\instructions_fig\Average steps for each 5-min interval.png)
+![interval](\instructions_fig\2.png)
 Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 ```{r}
 avr_int[which(meanSteps==max(meanSteps)),interval]
@@ -79,7 +79,7 @@ ggplot(newsteps_day,aes(x=totalsteps)) + geom_histogram() +
   ggtitle("Total number of steps taken each day(No NA)")+ theme_bw()
 
 ```
-![Sample panel plot](\instructions_fig\Total number of steps taken each day(No NA).png)
+![imputing](\instructions_fig\3.png)
 Calculate and report the mean and median total number of steps taken per day
 ```{r}
 median(newsteps_day$totalsteps)
@@ -109,4 +109,4 @@ ggplot(dtIntervals, aes(x=interval, y=meanSteps, color=dayType)) +
   ggtitle("Comparement of Weekday and Weekends")+
   theme_bw()
 ```
-![Sample panel plot](\instructions_fig\Weekday and Weekend comparement.png)
+![compare](\instructions_fig\4.png)

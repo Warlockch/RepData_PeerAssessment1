@@ -35,7 +35,7 @@ ggplot(steps_day,aes(x=totalsteps)) + geom_histogram() +
 xlab("Total number of steps") +
 ggtitle("total number of steps taken each day")+ theme_bw()
 ```
-![Sample panel plot](\instructions_fig\Total numbers of steps per day.png) 
+![Total plot](\instructions_fig\Total numbers of steps per day.png) 
 Calculate the mean and median total number of steps taken per day
 ```{r}
 median(steps_day$totalsteps,na.rm = TRUE)

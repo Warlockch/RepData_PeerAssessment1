@@ -7,9 +7,11 @@ output:
 
 
 ## Loading and preprocessing the data
+## Load the essiential packages
 ```{r}
 library(ggplot2)
 library(data.table)
+```
 df <- read.csv("activity.csv",stringsAsFactors=FALSE)
 dt <- data.table(df)
 dt$date <- as.Date(dt$date)

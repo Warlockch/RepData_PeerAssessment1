@@ -12,7 +12,7 @@ load the essiential packages
 library(ggplot2)
 library(data.table)
 ```
-read data from my work directary
+read data from my working directary
 ```{r}
 df <- read.csv("activity.csv",stringsAsFactors=FALSE)
 dt <- data.table(df)
@@ -40,13 +40,67 @@ median(steps_day$totalsteps,na.rm = TRUE)
 mean(steps_day$totalsteps,na.rm = TRUE)
 ```
 
-
 ## What is the average daily activity pattern?
-
-
+Make the plot of Average steps for each 5-min interval across the day
+```{r}
+avr_int<- dt[, list(meanSteps = mean(steps, na.rm=TRUE)), interval]
+ggplot(avr_int, aes(x=interval, y=meanSteps)) +
+geom_line() + ggtitle("Average steps for each 5-min interval")+
+ylab("Mean steps") + theme_bw()
+```
+Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+```{r}
+avr_int[which(meanSteps==max(meanSteps)),interval]
+```
 
 ## Imputing missing values
+Calculate and report the total number of missing values in the dataset
+```{r}
+sum(is.na(dt$steps))
+```
+I choose to use the mean for that 5-minute interval for the NAs in the steps
+```{r}
+dt_nna <- dt
 
+for (i in 1:nrow(dt_nna)) {
+  if (is.na(dt_nna$steps[i])) {
+    dt_nna$steps[i] <- avr_int[which(dt_nna$interval[i] == avr_int$interval), ]$meanSteps
+  }
+}
+```
+Make a histogram of the total number of steps taken each day
+```{r}
+newsteps_day <- dt_nna[, list(totalsteps = sum(steps)), date]
+ggplot(newsteps_day,aes(x=totalsteps)) + geom_histogram() +  
+  xlab("Total number of steps") +
+  ggtitle("total number of steps taken each day")+ theme_bw()
 
+```
+Calculate and report the mean and median total number of steps taken per day
+```{r}
+median(newsteps_day$totalsteps)
+mean(newsteps_day$totalsteps)
+```
+The former median value is 10765,the later median value is 10766.19
+The former mean value is 10766.19,the later mean value is 10766.19
+After calculation,I find that the median value is greater than it was before,and the mean value is the same.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+```{r}
+Sys.setlocale("LC_TIME", "English")
+wk_byday <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+
+wk_bytype <- c("Weekend", rep("Weekday", 5), "Weekend")
+dt <- dt[, dayOfWeek := factor(weekdays(date), levels=wk_byday)]
+dt <- dt[, dayType := factor(wk_bytype[dayOfWeek])]
+dt[, .N, list(dayType, dayOfWeek)]
+dtIntervals <- dt[, list(meanSteps = mean(steps, na.rm=TRUE)), list(dayType, interval)]
+```
+Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
+```{r} 
+ggplot(dtIntervals, aes(x=interval, y=meanSteps, color=dayType)) +
+  geom_line() +
+  facet_wrap(~ dayType, nrow=2) +
+  theme_bw()
+```

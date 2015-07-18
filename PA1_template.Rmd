@@ -73,7 +73,7 @@ Make a histogram of the total number of steps taken each day
 newsteps_day <- dt_nna[, list(totalsteps = sum(steps)), date]
 ggplot(newsteps_day,aes(x=totalsteps)) + geom_histogram() +  
   xlab("Total number of steps") +
-  ggtitle("total number of steps taken each day")+ theme_bw()
+  ggtitle("Total number of steps taken each day(No NA)")+ theme_bw()
 
 ```
 Calculate and report the mean and median total number of steps taken per day
@@ -102,5 +102,6 @@ Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minut
 ggplot(dtIntervals, aes(x=interval, y=meanSteps, color=dayType)) +
   geom_line() +
   facet_wrap(~ dayType, nrow=2) +
+  ggtitle("Comparement of Weekday and Weekends")+
   theme_bw()
 ```
